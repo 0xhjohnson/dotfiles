@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Generates the proper layout for my dual montitor setup.
+# Matching 1440p panels left one in portrait, right one landscape.
+
+xrandr --output DP-2 --mode 2560x1440 --rate 165 --output DP-0
+xrandr --output DP-0 --mode 2560x1440 --rate 165 --rotate left --left-of DP-2
+xrandr --output DP-0 --pos 0x0 --output DP-2 --pos 1440x0

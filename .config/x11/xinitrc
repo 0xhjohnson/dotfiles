@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# xinitrc runs automatically when you run startx
+
+if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xprofile" ]; then
+	. "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xprofile"
+else
+	. "$HOME/.xprofile"
+fi
+
+# set the bg
+feh --bg-scale ~/Nextcloud/daniel-leone-185834-unsplash.jpg
+# start window manager of choice dwm
+dwm

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Runs when display manager logs you in or in my case sourced on startx/xinit
+
+# load xrandr settings for multiple monitors
+${XDG_CONFIG_HOME:-$HOME/.config}/x11/xrandr &
+# use Xresources colors/settings
+xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources &
+# protect my eyes at night
+redshift -l 28.538:-81.378 &
+# start mopidy for ncmpcpp usage with spotify
+mopidy &
+# start dwmblocks for statusbar
+dwmblocks &
+# start picom compositor
+picom -b &
