@@ -3,7 +3,9 @@
 # Runs when display manager logs you in or in my case sourced on startx/xinit
 
 # load xrandr settings for multiple monitors
-${XDG_CONFIG_HOME:-$HOME/.config}/x11/xrandr &
+${XDG_CONFIG_HOME:-$HOME/.config}/x11/xrandr
+# set bg
+feh --bg-scale ${XDG_CONFIG_DATA:-$HOME/.local/share}/bg.jpg
 # use Xresources colors/settings
 xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources &
 # protect my eyes at night

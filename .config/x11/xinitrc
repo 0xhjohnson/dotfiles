@@ -8,7 +8,5 @@ else
 	. "$HOME/.xprofile"
 fi
 
-# set the bg
-feh --bg-scale ~/Nextcloud/daniel-leone-185834-unsplash.jpg
 # start window manager of choice dwm
 dwm
