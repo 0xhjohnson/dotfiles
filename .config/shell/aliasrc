@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Prefer neovim if installed.
+[ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
+
+alias \
+  ls="ls -hN --color=auto --group-directories-first" \
+  dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
