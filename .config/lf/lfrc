@@ -1,0 +1,10 @@
+# 0xhjohnson lf settings
+
+# Basics
+set ifs "\n"
+set scrolloff 10
+set period 1
+
+# Bindings
+map g top
+map D delete
