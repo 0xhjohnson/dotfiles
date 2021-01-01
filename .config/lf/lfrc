@@ -1,9 +1,21 @@
 # 0xhjohnson lf settings
 
 # Basics
+set shell bash
+set shellopts '-eu'
 set ifs "\n"
 set scrolloff 10
 set period 1
+
+# cmds/functions
+cmd open ${{
+    case $(file --mime-type $f -b) in
+	application/pdf|application/octet-stream|application/epub) setsid -f zathura $fx >/dev/null 2>&1 ;;
+        text/*) $EDITOR $fx;;
+	image/*) setsid -f sxiv $fx >/dev/null 2>&1 ;;
+        *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
+    esac
+}}
 
 # Bindings
 map g top
