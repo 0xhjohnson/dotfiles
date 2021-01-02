@@ -1,0 +1,13 @@
+[Default Applications]
+
+# xdg-open uses these to determine how to open filetypes.
+
+text/x-shellscript=text.desktop;
+text/plain=text.desktop;
+application/postscript=pdf.desktop;
+application/pdf=pdf.desktop;
+image/png=img.desktop;
+image/jpeg=img.desktop;
+image/gif=img.desktop;
+inode/directory=file.desktop;
+x-scheme-handler/sgnl=signal.desktop
