@@ -1,7 +1,4 @@
 [Default Applications]
-
-# xdg-open uses these to determine how to open filetypes.
-
 text/x-shellscript=text.desktop;
 text/plain=text.desktop;
 application/postscript=pdf.desktop;
@@ -11,3 +8,30 @@ image/jpeg=img.desktop;
 image/gif=img.desktop;
 inode/directory=file.desktop;
 x-scheme-handler/sgnl=signal.desktop
+x-scheme-handler/http=userapp-Firefox-X4G3W0.desktop
+x-scheme-handler/https=userapp-Firefox-X4G3W0.desktop
+x-scheme-handler/ftp=userapp-Firefox-X4G3W0.desktop
+x-scheme-handler/chrome=userapp-Firefox-X4G3W0.desktop
+text/html=userapp-Firefox-X4G3W0.desktop
+application/x-extension-htm=userapp-Firefox-X4G3W0.desktop
+application/x-extension-html=userapp-Firefox-X4G3W0.desktop
+application/x-extension-shtml=userapp-Firefox-X4G3W0.desktop
+application/xhtml+xml=userapp-Firefox-X4G3W0.desktop
+application/x-extension-xhtml=userapp-Firefox-X4G3W0.desktop
+application/x-extension-xht=userapp-Firefox-X4G3W0.desktop
+x-scheme-handler/around=around.desktop
+x-scheme-handler/signalcaptcha=signal.desktop
+x-scheme-handler/postman=Postman.desktop
+
+[Added Associations]
+x-scheme-handler/http=userapp-Firefox-X4G3W0.desktop;
+x-scheme-handler/https=userapp-Firefox-X4G3W0.desktop;
+x-scheme-handler/ftp=userapp-Firefox-X4G3W0.desktop;
+x-scheme-handler/chrome=userapp-Firefox-X4G3W0.desktop;
+text/html=userapp-Firefox-X4G3W0.desktop;
+application/x-extension-htm=userapp-Firefox-X4G3W0.desktop;
+application/x-extension-html=userapp-Firefox-X4G3W0.desktop;
+application/x-extension-shtml=userapp-Firefox-X4G3W0.desktop;
+application/xhtml+xml=userapp-Firefox-X4G3W0.desktop;
+application/x-extension-xhtml=userapp-Firefox-X4G3W0.desktop;
+application/x-extension-xht=userapp-Firefox-X4G3W0.desktop;

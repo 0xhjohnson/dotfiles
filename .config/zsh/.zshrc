@@ -54,3 +54,11 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export PATH="$(yarn global bin):$PATH"
+export GPG_TTY=$TTY
+
+# Setting fd as the default source for fzf
+# Include all hidden files and dirs but exclude .git dirs
+# By default stuff in .gitignore is also excluded
+export FZF_DEFAULT_COMMAND='fd --type f -H -E .git'

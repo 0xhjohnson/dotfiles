@@ -1,0 +1,7 @@
+defaults.ctl.card 3;
+defaults.pcm.card 3;
+
+pcm.!default {
+  type plug
+  slave.pcm hw
+}
