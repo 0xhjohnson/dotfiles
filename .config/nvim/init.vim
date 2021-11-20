@@ -3,8 +3,6 @@
 "   Hunter Johnson — @0xhjohnson
 "
 " Sections:
-"    -> VIM Plug
-"    -> General
 "    -> VIM user interface
 "    -> Colors and Fonts
 "    -> Files and backups
@@ -19,10 +17,6 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM Plug
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Install vim-plug if not found
 if empty(glob(stdpath('data') . '/site/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -35,27 +29,58 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 \| endif
 
 call plug#begin(stdpath('data') . '/plugged')
+" tpope the goat
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
-Plug 'machakann/vim-sandwich'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sleuth'
+
 Plug 'christoomey/vim-system-copy'
 Plug 'andymass/vim-matchup'
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
+Plug 'nvim-lualine/lualine.nvim'
+
+" Themes
 Plug 'sainnhe/sonokai'
-Plug 'itchyny/lightline.vim'
+" Plug 'shaunsingh/nord.nvim'
+
+" Language Server Protocol
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
+
+" Auto-complete
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/nvim-cmp'
+" Snippets plugin
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+
+" Fuzzy search
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'maxmellon/vim-jsx-pretty' " fix indentation in jsx until treesitter can
 call plug#end()
 
-" => lsp
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enter the current millenium
+set nocompatible
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = " "
+" Fast saving
+nmap <leader>w :w!<cr>
+" :W sudo saves the file 
+" (useful for handling the permission-denied error)
+command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
+set completeopt=menu,menuone,noselect
+
+" => nvim-lsp-installer
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 lua << EOF
 local lsp_installer = require("nvim-lsp-installer")
 
@@ -75,11 +100,48 @@ lsp_installer.on_server_ready(function(server)
 end)
 EOF
 
-" => lightline.vim
+" => nvim-cmp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:lightline = {
-      \ 'colorscheme': 'sonokai'
-      \ }
+lua << EOF
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' }
+  }
+})
+EOF
+
+" => lualine.nvim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+lua << EOF
+require'lualine'.setup {
+  options = {
+    options = 'sonokai',
+    icons_enabled = false,
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''}
+  }
+}
+EOF
 
 " => vim-closetag
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -92,39 +154,43 @@ let g:closetag_regions = {
     \ 'javascript.jsx': 'jsxRegion',
     \ }
 
-" => vim-sandwich
+" => telescope.nvim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" If you have not copied default recipes
-let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
-
-" Add spaces inside bracket
-let g:sandwich#recipes += [
-  \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
-  \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
-  \   {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
-  \   {'buns': ['{\s*', '\s*}'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['{']},
-  \   {'buns': ['\[\s*', '\s*\]'], 'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['[']},
-  \   {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['(']},
-  \ ]
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enter the current millenium
-set nocompatible
-
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = " "
-
-" Fast saving
-nmap <leader>w :w!<cr>
-
-" :W sudo saves the file 
-" (useful for handling the permission-denied error)
-command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
-
+lua << EOF
+require('telescope').setup {
+  defaults = {
+    file_ignore_patterns = { "node_modules", ".git" }
+  },
+  extensions = {},
+  pickers = {
+    buffers = {
+      show_all_buffers = true,
+      sort_lastused = true,
+      mappings = {
+        i = {
+          ["<M-d>"] = "delete_buffer",
+        }
+      }
+    }
+  }
+}
+require('telescope').load_extension('fzf')
+EOF
+nnoremap <leader>ps :lua require'telescope.builtin'.grep_string{ search = vim.fn.input("Grep for > ") }<cr>
+nnoremap <leader>ff :lua require'telescope.builtin'.find_files{ hidden = true }<cr>
+nnoremap <leader>fb :lua require'telescope.builtin'.buffers{}<cr>
+nnoremap <Leader>fs :lua require'telescope.builtin'.file_browser{ cwd = vim.fn.expand('%:p:h') }<cr>
+nnoremap <Leader>fc :lua require'telescope.builtin'.git_status{}<cr>
+nnoremap <Leader>cb :lua require'telescope.builtin'.git_branches{}<cr>
+nnoremap <leader>fr :lua require'telescope.builtin'.resume{}<cr>
+nnoremap <leader>fg :lua require'telescope.builtin'.live_grep{}<cr>
+nnoremap <leader>gr :lua require'telescope.builtin'.lsp_references{}<cr>
+nnoremap <leader>ca :lua require'telescope.builtin'.lsp_code_actions{}<cr>
+nnoremap <leader>e :lua require'telescope.builtin'.lsp_document_diagnostics{}<cr>
+nnoremap <leader>ee :lua require'telescope.builtin'.lsp_workspace_diagnostics{}<cr>
+nnoremap <leader>gi :lua require'telescope.builtin'.lsp_implementations{}<cr>
+nnoremap <leader>gd :lua require'telescope.builtin'.lsp_definitions{}<cr>
+nnoremap <leader>gt :lua require'telescope.builtin'.lsp_type_definitions{}<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -199,7 +265,12 @@ set noshowmode
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if (has("termguicolors"))
+  set termguicolors " enable true colors support
+endif
+let g:sonokai_style = 'espresso'
 let g:sonokai_enable_italic = 1
+let g:sonokai_disable_italic_comment = 1
 try
     colorscheme sonokai
 catch
@@ -226,18 +297,6 @@ set ffs=unix,dos,mac
 set nobackup
 set nowb
 set noswapfile
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
-set expandtab
-
-" 1 tab == 2 spaces
-set shiftwidth=2
-set tabstop=2
-set softtabstop=2
 
 
 """"""""""""""""""""""""""""""
